@@ -5,19 +5,23 @@ let operator = '';
 let displayNumber = '';
 
 function add(number1, number2) {
-    return result = number1 + number2;
+    return result = Math.round((number1 + number2)*1000)/1000;
 }
 
 function subtract(number1, number2) {
-    return result = number1 - number2;
+    return result = Math.round((number1 - number2)*1000)/1000;
 }
 
 function multiply(number1, number2) {
-    return result = number1 * number2;
+    return result = Math.round((number1 * number2)*1000)/1000;
 }
 
 function divide(number1, number2) {
-    return result = number1 / number2;
+    if (number1 == 0 || number2 == 0) {
+        return result = "forReal?";
+    } else {
+        return result = Math.round((number1 / number2)*1000)/1000;
+    }
 }
 
 function operate(number1, number2, operator) {
@@ -39,13 +43,6 @@ function operate(number1, number2, operator) {
 
 document.querySelector("#display").textContent = displayNumber
 
-// let num1 = document.querySelector("#n1");
-// num1.addEventListener('click', () => {
-//     displayNumber += '1';
-//     document.querySelector("#display").textContent = displayNumber;
-//     console.log(displayNumber);
-// })
-
 let keyCancel = document.querySelector(".cancel");
 keyCancel.addEventListener('click', () => {
     displayNumber = '';
@@ -53,6 +50,7 @@ keyCancel.addEventListener('click', () => {
     number2 = '';
     result = '';
     operator = '';
+    keyDecimal.disabled = false;
     document.querySelector("#display").textContent = displayNumber;
 })
 
@@ -68,6 +66,7 @@ keyResult.addEventListener('click', () => {
         operator = '';
         number2 = '';
         number1 = result;
+        keyDecimal.disabled = false;
         document.querySelector("#display").textContent = result;
     }
 })
@@ -77,6 +76,11 @@ keysNum.forEach((keyNum) => {
     keyNum.addEventListener('click', () => {
         displayNumber += keyNum.innerHTML;
         document.querySelector("#display").textContent = displayNumber;
+        if (displayNumber.includes(".")) {
+            keyDecimal.disabled = true;
+        } else {
+            keyDecimal.disabled = false;
+        }
     });
 });
 
@@ -89,11 +93,6 @@ keysOper.forEach((keyOper) => {
             operator = keyOper.textContent
             displayNumber = '';
             document.querySelector("#display").textContent = result;
-            console.log("1: " + number1);
-            console.log("2: " + number2);
-            console.log("oper: " + operator);
-            console.log("disp: " + displayNumber);
-            console.log("res: " + result);
         } else {
             number2 = Number(displayNumber);
             operate(number1, number2, operator)
@@ -102,12 +101,15 @@ keysOper.forEach((keyOper) => {
             number2 = '';
             number1 = result;
             document.querySelector("#display").textContent = result;
-            console.log("1: " + number1);
-            console.log("2: " + number2);
-            console.log("oper: " + operator);
-            console.log("disp: " + displayNumber);
-            console.log("res: " + result);
         }
 });
 });
+
+let keyDecimal = document.querySelector("#decimal");
+keyDecimal.addEventListener('click', () => {
+    if (displayNumber.includes(".")) {
+        keyDecimal.disabled = true;
+    }
+})
+
 
